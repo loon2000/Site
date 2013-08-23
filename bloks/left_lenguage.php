@@ -1,0 +1,1 @@
+<td align="center" valign="top"> <a href="?lang=ua">UA</a> <a href="?lang=ru">RU</a> <a href="?lang=en">EN</a></td>

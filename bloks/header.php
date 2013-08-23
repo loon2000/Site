@@ -1,0 +1,1 @@
+<td bgcolor="#2B98FF"><a href="/site/main_page.php"><img src="img/header.jpg" width="690" height="100"></a></td>
