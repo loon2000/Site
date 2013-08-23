@@ -9,7 +9,8 @@ if(isset($_POST['ok']))
         $pass = stripslashes(trim(mysql_real_escape_string($_POST['pass'])));
 	$r_pass = stripslashes(trim(mysql_real_escape_string($_POST['r_pass'])));
 	$email = stripslashes(trim(mysql_real_escape_string($_POST['email'])));
-        if(empty($login) || empty($pass) || empty($r_pass)  || empty($email))
+	preg_match( "#^[0-9a-z_\-\.]+@[0-9a-z\-\.]+\.[a-z]{2,6}$#", $email ,$matches);
+        if(empty($login) || empty($pass) || empty($r_pass)  || empty($email) || $email<>$matches[0])
             print ($ini['Error1']);
         else
         {  
@@ -19,7 +20,7 @@ if(isset($_POST['ok']))
 			mysql_select_db('sitebd',$bd);
 			$result = mysql_query("SELECT id
 					      FROM user
-					      WHERE login='$login'") or die (mysql_error());
+					      WHERE login='$login' or e_mail='$email'") or die (mysql_error());
 			if ($result)
 			    $data = mysql_fetch_array($result);
 			    if(!empty($data['id']))
