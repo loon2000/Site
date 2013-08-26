@@ -1,4 +1,5 @@
 <?php
+session_start();
 $root = '/var/www/site';
 include($root.'/lib/lang.php');
 if(isset($_POST['ok']))
@@ -30,8 +31,13 @@ if(isset($_POST['ok']))
 				$result = mysql_query ("INSERT INTO user (login,pass,e_mail) VALUES('$login','$pass','$email')");
 				if ($result) 
 				{
-				    header ('Location: /site/index.php?lang='.$lang.'&masege='.$ini[Update_new_acc]);
-				    die();				    
+				    $result = mysql_query("SELECT *
+					      FROM user
+					      WHERE login='$login'") or die (mysql_error());
+				    $data = mysql_fetch_array($result);
+				    $_SESSION['user_id'] = $data['id'];
+				    header ('Location: /site/main_page.php?lang='.$lang.'&masege='.$ini[Update_new_acc]);
+				    die();
 				}
 				else 
 				    echo $ini['No_update'];
