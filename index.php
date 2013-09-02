@@ -1,5 +1,5 @@
 <?php session_start();
-unset($_SESSION['user_id']);
+unset($_SESSION['user_id'],$_SESSION['status']);
 $root = '/var/www/site';
 include($root.'/lib/lang.php');
 ?>
@@ -18,19 +18,25 @@ include($root.'/lib/lang.php');
   <tr>
     <td><table width="100%" border="0">
       <tr>
-        <td width="14%" align="left" valign="top" bgcolor="#2B98FF"><table width="100%" border="0">
+        <td width="14%" align="left" valign="top" bgcolor="#2B98FF">
+          <table width="100%" border="0">
           <tr>
             <?php include ($root.'/bloks/left_lenguage.php');?>
           </tr>
           <tr>
              <?php include ($root.'/bloks/left_login.php');?>
+          <tr>
+            <td align="center">
+            <a href="/site/users.php?lang=<?php echo $_REQUEST['lang']; ?>"><?php echo $ini['Users']; ?></a>
+            </td>
+          </tr>
           </tr>
         </table></td>
         <td width="86%" align="left" valign="top">
         <?php
-        if (isset($_REQUEST['masege']))
-          print '<p>'.$_REQUEST['masege'].'</p>';
-        print $ini['Text_start']; ?></td>
+        print $ini['Text_start'];
+        include ($root.'/lib/main.php');
+        ?></td>
       </tr>
     </table></td>
   </tr>

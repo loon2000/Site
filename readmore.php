@@ -2,12 +2,8 @@
 session_start();
 $root = '/var/www/site';
 include($root.'/lib/lang.php');
-if (isset($_SESSION['user_id'])) 
-{ 
- include($root.'/lib/bd.php');
- $result = mysql_query("SELECT * FROM page WHERE id='$_REQUEST[id]'") or die(mysql_error());
- $data = mysql_fetch_array($result);
- ?>
+include_once($root.'/lib/bd.php');
+?>
  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
  <html>
  <head>  
@@ -17,6 +13,9 @@ if (isset($_SESSION['user_id']))
 
  <body>
  <table width="100%" border="0">
+   <tr>
+         <?php include ($root.'/bloks/left_user.php');?>
+   </tr>
    <tr>
      <?php include ($root.'/bloks/header.php');?>
    </tr>
@@ -32,7 +31,10 @@ if (isset($_SESSION['user_id']))
            </tr>
          </table></td>
          <td width="86%" align="left" valign="top">
-              <h2><?php echo $data['title_page'];?></h2>
+              <h2><?php
+              $result = mysql_query("SELECT * FROM page WHERE id='$_REQUEST[id]'") or die(mysql_error());
+              $data = mysql_fetch_array($result);
+              echo $data['title_page'];?></h2>
               <?php echo $data['text_page'];?>
          </td>
        </tr>
@@ -44,7 +46,3 @@ if (isset($_SESSION['user_id']))
  </table>
  </body>
  </html>
- <?php }
-else {
-    die($ini['Nologin'].' <a href="/site/index.php?lang='.$lang.'">'.$ini['Start_page'].'</a>');
-}?>

@@ -2,6 +2,8 @@
 $root = '/var/www/site';
 if (isset($_SESSION['user_id'])) 
 {
+  if ($_SESSION['status']=='admin' or $_SESSION['status']=='editor')
+  {
 	include($root.'/lib/lang.php');
 	if(isset($_POST['pub']))
 	{
@@ -33,6 +35,7 @@ if (isset($_SESSION['user_id']))
 		else 
 			print $ini['Error1'];
 	}
+  }
 }
 else 
     die($ini['Nologin'].' <a href="/site/index.php?lang='.$lang.'">'.$ini['Start_page'].'</a>');

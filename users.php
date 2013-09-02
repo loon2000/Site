@@ -1,12 +1,8 @@
 <?php 
 session_start();
 $root = '/var/www/site';
-error_reporting(E_ALL | E_STRICT | E_NOTICE);
 include($root.'/lib/lang.php');
-include($root.'/lib/login.php');
-if (isset($_SESSION['user_id'])) 
-{
-	?>
+?>
 	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 	<html>
 	<head>
@@ -34,7 +30,7 @@ if (isset($_SESSION['user_id']))
 			  </tr>
 			</table></td>
 			<td width="86%" align="left" valign="top">
-			<?php include($root.'/lib/main.php');?>
+			<?php include($root.'/lib/list_user.php');?>
 			</td>
 		  </tr>
 		</table></td>
@@ -45,8 +41,3 @@ if (isset($_SESSION['user_id']))
 	</table>
 	</body>
 	</html>
-	<?php 
-}
-else 
-	die($ini['Nologin'].' <a href="/site/index.php?lang='.$lang.'">'.$ini['Start_page'].'</a>');
-?>

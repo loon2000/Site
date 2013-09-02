@@ -28,7 +28,8 @@ if(isset($_POST['ok']))
 			        print ($ini['Error_log']);
 			    else
 			    {
-				$result = mysql_query ("INSERT INTO user (login,pass,e_mail) VALUES('$login','$pass','$email')");
+				$result = mysql_query ("INSERT INTO user (login,pass,e_mail,date_cr,status,avatar)
+									   VALUES('$login','$pass','$email',NOW(),'user','/site/img/user.jpeg')");
 				if ($result) 
 				{
 				    $result = mysql_query("SELECT *
