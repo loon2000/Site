@@ -36,17 +36,25 @@ if (isset($_SESSION['user_id']))
 	      </tr>
 	    </table></td>
 	    <td width="86%" align="left" valign="top">
-	     <?php include($root.'/lib/update_page.php'); ?>
-	     <form name="form1" method="post" action="">
-		 <h2><?php
-		     $result = mysql_query("SELECT * FROM page WHERE id='$_REQUEST[id]'") or die(mysql_error());
-		     $data = mysql_fetch_array($result);
-		 echo $ini['Edit_cont'];?></h2>
+	     <?php include($root.'/lib/update_page.php'); 
+	     	   $result = mysql_query("SELECT * FROM page WHERE id='$_REQUEST[id]'") or die(mysql_error());
+			   $data = mysql_fetch_array($result);
+			   if ($_SESSION['user_id'] == $data['autor'])
+			   { ?>
+		 <form name="form1" method="post" action="">
+		 <h2><?php echo $ini['Edit_cont'];?></h2>
 		 <p><?php echo $ini['Title_cont'];?><br><input value="<?php echo $data['title_page'] ?>" name="title_page" type="text" size="30"></p>
 		 <p><?php echo $ini['Text_cont'];?><br><textarea name="text_page" cols="100" rows="40"><?php echo $data['text_page'] ?></textarea></p>
 		 <input name="id" type="hidden" value="<?php echo $data['id'] ?>">
 		 <p><input name="pub" type="submit" value="<?php echo $ini['Ok_cont'];?>"></p>
 	     </form>
+		 <?php
+			   }
+			   else
+			   {
+				print $ini['Error'];
+			   }
+		  ?>
 	    </td>
 	  </tr>
 	</table></td>

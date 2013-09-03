@@ -12,12 +12,15 @@ if ($result)
 	while ($data = mysql_fetch_array($result)) 
 	{
 		print '<h1>'.$data['title_page'].'</h1>';
-		$result2 = mysql_query("SELECT *  FROM user
-					WHERE id='$data[autor]'") or die(mysql_error());
-		if ($result2)
+		if (isset($_SESSION['user_id']))
 		{
-			$data2 = mysql_fetch_array($result2);
-			print '<p>'.$ini['Autor'].': <a href="/site/profile.php?id='.$data2['id'].'&lang='.$lang.'">'.$data2['login'].'</a></p>';
+				$result2 = mysql_query("SELECT *  FROM user
+							WHERE id='$data[autor]'") or die(mysql_error());
+				if ($result2)
+				{
+					$data2 = mysql_fetch_array($result2);
+					print '<p>'.$ini['Autor'].': <a href="/site/profile.php?id='.$data2['id'].'&lang='.$lang.'">'.$data2['login'].'</a></p>';
+				}
 		}
 		if (isset($_SESSION['status'],$_SESSION['user_id']))
 		{

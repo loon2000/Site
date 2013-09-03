@@ -38,6 +38,8 @@ if (isset($_SESSION['user_id']))
 	      </tr>
 	    </table></td>
 	    <td width="86%" align="left" valign="top">
+		  <?php if (isset($_REQUEST['masege']))
+					print '<p>'.$_REQUEST['masege'].'</p>';?>
 		 <h2><?php echo $ini['Login'].' '.$data['login']; ?></h2>
 		 <img src="
 			<?php

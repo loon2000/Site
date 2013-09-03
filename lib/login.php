@@ -1,5 +1,6 @@
 <?php
 $root = '/var/www/site';
+include_once($root.'/lib/function_global.php');
 if(isset($_POST['Enter']))
 {
 	if (isset($_POST['login'],$_POST['pass']))
@@ -12,6 +13,7 @@ if(isset($_POST['Enter']))
 		{  
 			$bd = mysql_connect('localhost','site','site');
 			mysql_select_db('sitebd',$bd);
+			$pass = password($pass);
 			$result=mysql_query("SELECT * 
 						FROM user 
 						WHERE login = '$login' 
