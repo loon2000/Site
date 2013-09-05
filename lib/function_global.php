@@ -50,7 +50,7 @@ function registrationCorrect(){
     
 	$login = stripslashes(trim(mysql_real_escape_string($_POST['login'])));
     $email = stripslashes(trim(mysql_real_escape_string($_POST['email'])));
-	$result = mysql_query("SELECT id
+	$result = mysql_query("SELECT *
 							FROM user
 							WHERE login='$login' or e_mail='$email'") or die (mysql_error());
     if (mysql_num_rows($result) != 0) return false;
@@ -69,6 +69,14 @@ function edituserCorrect($email, $pass, $r_pass, $id){
 	
     return true;
 }
+function langSelectBd($column,$text_s)
+{
+ $result = mysql_query("SELECT *
+						 FROM lang
+						 WHERE $column = '$text_s'") or die (mysql_error());
+ return $result;
+}
+
 function pass_r_pass_empty($pass,$r_pass,$c,$id){
     if (empty($_POST['r_pass']) && empty($_POST['pass']))
     {	

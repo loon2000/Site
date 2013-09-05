@@ -45,16 +45,13 @@ if (isset($_SESSION['user_id']))
 			  </table>
 			</td>
 			<td width="86%" align="left" valign="top">
-			  <?php include($root.'/lib/update_ini.php'); 
-              print '<h2>'.$ini['Translate'].'</h2>';
-              foreach($ini as $key => $value){
-         ?>
+			  <?php include($root.'/lib/update_lang.php'); 
+              print '<h2>'.$ini['Translate'].'</h2>';?>
         <form name="form" method="post" action="">
-         <p><?php print $key;?><br>
-         <input name="text<?php print $key;?>" type="text" size="50" value="<?php print $value;?>"></p>
-        <?php
-              }
-        ?>
+         <p>Введіть рядок тексту для пошуку<br>
+         <input name="search" type="text" size="50"><br>
+         Переклад<br>
+         <input name="traslate" type="text" size="50"</p>
          <p><input name="ok" type="submit" value="OK"></p>
         </form>
 
