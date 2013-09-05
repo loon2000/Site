@@ -26,14 +26,18 @@ if (isset($_SESSION['user_id']))
     <html>
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title><?php echo $ini['Title_acc']; ?></title>
+    <title><?php echo $ini['Title_edit_user']; ?></title>
     </head>
     
     <body>
+	<table width="100%" border="0">
+	  <tr>
+		<?php include ($root.'/bloks/blok_user.php');?>
+		<?php include ($root.'/bloks/blok_lenguage.php');?>
+	  </tr>
+	</table>
+
     <table width="100%" border="0">
-      <tr>
-	    <?php include ($root.'/bloks/left_user.php');?>
-      </tr>
       <tr>
 	<?php include ('bloks/header.php');?>
       </tr>
@@ -42,7 +46,7 @@ if (isset($_SESSION['user_id']))
 	  <tr>
 	    <td width="14%" align="left" valign="top" bgcolor="#2B98FF"><table width="100%" border="0">
 	      <tr>
-		<?php include ($root.'/bloks/left_lenguage.php');?>
+		  &nbsp;
 	      </tr>
 	      <tr>
 		 <?php include ($root.'/bloks/left_menu.php');?>

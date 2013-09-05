@@ -1,38 +1,38 @@
 <?php
 $root = '/var/www/site';
-include($root.'/lib/lang.php');
+include_once($root.'/lib/lang.php');
+include_once($root.'/lib/function_global.php');
 if (isset($_SESSION['user_id']))
 {
 	if ($_SESSION['status']=='admin' or $_SESSION['status']=='editor')
 	{
 		if(isset($_POST['pub']))
 		{
-			if( isset($_POST['title_page'], $_POST['text_page']))
-			{
-				$title_page = $_POST['title_page'];
-				$text_page = $_POST['text_page'];
-				$select_lang = $_POST['select_lang'];
-				if(empty($title_page) || empty($text_page) || empty($select_lang))
-					print $ini['Error1'];
+				$post_page = array (
+					$_POST['title_ua'],
+					$_POST['title_ru'],
+					$_POST['title_en'],
+					$_POST['text_ua'],
+					$_POST['text_ru'],
+					$_POST['text_en']
+				);
+				formCorrect($post_page,$ini['Error1']);
+				$post_page = formEkran($post_page);
+				include($root.'/lib/bd.php');
+				$result = mysql_query ("INSERT
+															 INTO page (title_ua, title_ru, title_en,
+																		 text_ua, text_ru, text_en,
+																		 autor)
+															 VALUES('$post_page[0]','$post_page[1]','$post_page[2]',
+																		 '$post_page[3]','$post_page[4]','$post_page[5]',
+																		 $_SESSION[user_id])") or die(mysql_error());
+				if ($result)
+			 {
+				 header('Location: /site/main_page.php?lang='.$lang.'&masege='.$ini['Update']);
+				 die();
+			 }
 				else
-				{  
-					 include($root.'/lib/bd.php');
-					 $result = mysql_query ("INSERT 
-								INTO page (lang, title_page, text_page, autor) 
-								VALUES('$select_lang','".mysql_escape_string($title_page)."',
-											'".mysql_escape_string($text_page)."',
-											$_SESSION[user_id])") or die(mysql_error());
-					 if ($result)
-					{
-						header('Location: /site/main_page.php?lang='.$lang.'&masege='.$ini['Update']);
-						die();
-					}
-					 else
-						print $ini['No_update'];
-				}	
-			}
-			else 
-				print $ini['Error1'];
+				 print $ini['No_update'];
 		}
 	}
 }

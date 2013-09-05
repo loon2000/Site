@@ -16,43 +16,51 @@ if (isset($_SESSION['user_id']))
   </head>
   
   <body>
+	
+  <table width="100%" border="0">
+	<tr>
+	  <?php include ($root.'/bloks/blok_user.php');?>
+	  <?php include ($root.'/bloks/blok_lenguage.php');?>
+	</tr>
+  </table>
+
   <table width="100%" border="0">
     <tr>
-	  <?php include ($root.'/bloks/left_user.php');?>
     </tr>
     <tr>
       <?php include ($root.'/bloks/header.php');?>
     </tr>
     <tr>
-      <td><table width="100%" border="0">
-	<tr>
-	  <td width="14%" align="left" valign="top" bgcolor="#2B98FF"><table width="100%" border="0">
-	    <tr>
-	      <?php include ($root.'/bloks/left_lenguage.php');?>
-	    </tr>
-	    <tr>
-		<?php include ($root.'/bloks/left_menu.php');?>
-	    </tr>
-	  </table></td>
-	  <td width="86%" align="left" valign="top">
-	  <?php include($root.'/lib/new_page.php') ?>
-	  <form name="form2" method="post" action="">
-	       <h2><?php echo $ini['Create_content'];?></h2>
-			   <?php echo $ini['Language']; ?>
-			   <Select name="select_lang">
-			   <option></option>
-			   <option VALUE="ua">ua</option>
-			   <option VALUE="ru">ru</option>
-			   <option VALUE="en">en</option>
-			   </SELECT>
-	       <p><?php echo $ini['Title_cont'];?><br><input name="title_page" type="text" size="100"></p>
-	       <p><?php echo $ini['Text_cont'];?><br><textarea name="text_page" cols="100" rows="40"></textarea></p>
-	       <p><input name="pub" type="submit" value="<?php echo $ini['Ok_cont'];?>"></p>
-	   </form>
-  
+      <td>
+		<table width="100%" border="0">
+		  <tr>
+		    <td width="14%" align="left" valign="top" bgcolor="#2B98FF">
+			  <table width="100%" border="0">
+			    <tr>
+			    </tr>
+				<tr>
+				  <?php include ($root.'/bloks/left_menu.php');?>
+				</tr>
+			  </table>
+			</td>
+			<td width="86%" align="left" valign="top">
+			  <?php include($root.'/lib/new_page.php') ?>
+			  <form name="form2" method="post" action="">
+				<h2><img src="/site/img/en.png" width="20"> Create content</h2>
+				<h2><img src="/site/img/ua.png" width="20"> Створити запис</h2>
+				<h2><img src="/site/img/ru.png" width="20"> Создать публикацию</h2>
+				<p>Title in English<br><input name="title_en" type="text" size="74"></p>
+				<p>Тема українською<br><input name="title_ua" type="text" size="74"></p>
+				<p>Тема на русском<br><input name="title_ru" type="text" size="74"></p>
+				<p>Text in English<br><textarea name="text_en" cols="100" rows="40"></textarea></p>
+				<p>Текст українською<br><textarea name="text_ua" cols="100" rows="40"></textarea></p>
+				<p>Текст на русском<br><textarea name="text_ru" cols="100" rows="40"></textarea></p>
+				<p><input name="pub" type="submit" value="<?php echo $ini['Ok_cont'];?>"></p>
+			  </form>
+			</td>
+		  </tr>
+		</table>
 	  </td>
-	</tr>
-      </table></td>
     </tr>
     <tr>
       <?php include ($root.'/bloks/footer.php');?>

@@ -17,10 +17,13 @@ if (isset($_SESSION['user_id']))
     </head>
    
     <body>
-    <table width="100%" border="0">
-      <tr>
-	    <?php include ($root.'/bloks/left_user.php');?>
-      </tr>
+      <table width="100%" border="0">
+		<tr>
+		  <?php include ($root.'/bloks/blok_user.php');?>
+		  <?php include ($root.'/bloks/blok_lenguage.php');?>
+		</tr>
+	  </table>
+	<table width="100%" border="0">
       <tr>
 	<?php include ($root.'/bloks/header.php');?>
       </tr>
@@ -29,9 +32,6 @@ if (isset($_SESSION['user_id']))
 	  <tr>
 	    <td width="14%" align="left" valign="top" bgcolor="#2B98FF"><table width="100%" border="0">
 	      <tr>
-		<?php include ($root.'/bloks/left_lenguage.php');?>
-	      </tr>
-	      <tr>
 		 <?php include ($root.'/bloks/left_menu.php');?>
 	      </tr>
 	    </table></td>
@@ -39,7 +39,7 @@ if (isset($_SESSION['user_id']))
 	     <?php include($root.'/lib/update_page.php'); 
 	     	   $result = mysql_query("SELECT * FROM page WHERE id='$_REQUEST[id]'") or die(mysql_error());
 			   $data = mysql_fetch_array($result);
-			   if ($_SESSION['user_id'] == $data['autor'])
+			   if ($_SESSION['user_id'] == $data['autor'] or $_SESSION['status']=='admin')
 			   { ?>
 		 <form name="form1" method="post" action="">
 		 <h2><?php echo $ini['Edit_cont'];?></h2>

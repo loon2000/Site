@@ -1,0 +1,1 @@
+<td bgcolor="#2B98FF"><?php back('<img src="img/header.jpg" width="690" height="100">');?></td>

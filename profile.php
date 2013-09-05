@@ -19,10 +19,14 @@ if (isset($_SESSION['user_id']))
     </head>
     
     <body>
+	<table width="100%" border="0">
+	  <tr>
+		<?php include ($root.'/bloks/blok_user.php');?>
+		<?php include ($root.'/bloks/blok_lenguage.php');?>
+	  </tr>
+	</table>
+
     <table width="100%" border="0">
-      <tr>
-	    <?php include ($root.'/bloks/left_user.php');?>
-      </tr>
       <tr>
 	<?php include ('bloks/header.php');?>
       </tr>
@@ -31,7 +35,7 @@ if (isset($_SESSION['user_id']))
 	  <tr>
 	    <td width="14%" align="left" valign="top" bgcolor="#2B98FF"><table width="100%" border="0">
 	      <tr>
-		<?php include ($root.'/bloks/left_lenguage.php');?>
+		  &nbsp;
 	      </tr>
 	      <tr>
 		 <?php include ($root.'/bloks/left_menu.php');?>

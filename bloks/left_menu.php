@@ -14,11 +14,16 @@ if (isset($_SESSION['user_id']))
   <?php	}
   if (isset($_SESSION['status']))
   {
-	if ($_SESSION['status'] == 'admin' || $_SESSION['status'] == 'editor')
-	{ ?>
-	      <a href="/site/add_page.php?lang=<?php echo $_REQUEST['lang']; ?>" class="style1"><?php echo $ini['Create_content']; ?></a><br>
-	<?php
-	}
+				if ($_SESSION['status'] == 'admin' || $_SESSION['status'] == 'editor')
+				{ ?>
+							<a href="/site/add_page.php?lang=<?php echo $_REQUEST['lang']; ?>" class="style1"><?php echo $ini['Create_content']; ?></a><br>
+				<?php
+				}
+				if ($_SESSION['status'] == 'admin')
+				{ ?>
+							<a href="/site/websitetranslation.php?lang=<?php echo $_REQUEST['lang']; ?>" class="style1"><?php echo $ini['Translate']; ?></a><br>
+				<?php
+				}
   }
   ?>
-  <a href="/site/index.php?lang=<?php echo $_REQUEST['lang']; ?>" class="style1"><?php echo $ini['Log_out']; ?></a><br></td>
+</td>

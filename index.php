@@ -1,7 +1,8 @@
 <?php session_start();
 unset($_SESSION['user_id'],$_SESSION['status']);
 $root = '/var/www/site';
-include($root.'/lib/lang.php');
+include_once($root.'/lib/lang.php');
+include_once($root.'/lib/function_global.php');
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -11,9 +12,16 @@ include($root.'/lib/lang.php');
 </head>
 
 <body>
-<table width="100%" border="0">
+  <table width="100%" border="0">
+	<tr>
+	  <?php include ($root.'/bloks/blok_user.php');?>
+	  <?php include ($root.'/bloks/blok_lenguage.php');?>
+	</tr>
+  </table>
+
+  <table width="100%" border="0">
   <tr>
-    <?php include ($root.'/bloks/header.php');?>
+    <?php include ($root.'/bloks/header_i.php');?>
   </tr>
   <tr>
     <td><table width="100%" border="0">
@@ -21,7 +29,6 @@ include($root.'/lib/lang.php');
         <td width="14%" align="left" valign="top" bgcolor="#2B98FF">
           <table width="100%" border="0">
           <tr>
-            <?php include ($root.'/bloks/left_lenguage.php');?>
           </tr>
           <tr>
              <?php include ($root.'/bloks/left_login.php');?>

@@ -1,7 +1,9 @@
 <?php
 error_reporting(0);
 $root = '/var/www/site';
-include($root.'/lib/lang.php');?>
+include_once($root.'/lib/lang.php');
+include_once($root.'/lib/function_global.php');
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,22 +12,27 @@ include($root.'/lib/lang.php');?>
 </head>
 
 <body>
+  <table width="100%" border="0">
+	<tr>
+	  <?php include ($root.'/bloks/blok_user.php');?>
+	  <?php include ($root.'/bloks/blok_lenguage.php');?>
+	</tr>
+  </table>
+
 <table width="100%" border="0">
   <tr>
-    <?php include ($root.'/bloks/header.php');?>
+    <?php include ($root.'/bloks/header_i.php');?>
   </tr>
   <tr>
     <td><table width="100%" border="0">
       <tr>
         <td width="14%" align="left" valign="top" bgcolor="#2B98FF"><table width="100%" border="0">
           <tr>
-            <?php include ($root.'/bloks/left_lenguage.php');?>
-          </tr>
-          <tr>
           </tr>
         </table></td>
         <td width="86%" align="left" valign="top">
-          <?php include($root.'/lib/new_login.php');?>
+          <?php include($root.'/lib/new_login.php');
+                back('<img src="/site/img/back_button.png" width="40" >');?>
               <form name="form1" method="post" action="">
                   <h2><?php echo $ini[New_account];?></h2>
                   <p><?php echo $ini[Login];?><br><input name="login" type="text" size="30"><br>
