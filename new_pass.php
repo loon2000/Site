@@ -6,7 +6,7 @@ include_once($root.'/lib/function_global.php');?>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title><?php echo $ini['New_pass']?></title>
+<title><?php echo t('Request password')?></title>
 </head>
 
 <body>
@@ -32,9 +32,9 @@ include_once($root.'/lib/function_global.php');?>
 			back('<img src="/site/img/back_button.png" width="40" >');
 			?>
          <form name="form1" method="post" action="">
-             <h2><?php echo $ini['New_pass'];?></h2>
-             <p><?php echo $ini['Login'];?><br><input name="login" type="text" size="30"><br>
-                <?php echo $ini['E_mail'];?><br><input name="email" type="text" size="30">
+             <h2><?php echo t('Request password');?></h2>
+             <p><?php echo t('Login');?><br><input name="login" type="text" size="30"><br>
+                <?php echo t('e-mail');?><br><input name="email" type="text" size="30">
              </p>
              <p><input name="ok" type="submit" value="OK"></p>
          </form>

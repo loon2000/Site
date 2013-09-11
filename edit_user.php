@@ -1,10 +1,11 @@
 <?php 
 session_start();
 $root = '/var/www/site';
-include($root.'/lib/lang.php');
+include_once($root.'/lib/lang.php');
+include_once($root.'/lib/function_global.php');
 if (isset($_SESSION['user_id'])) 
 {
-  include($root.'/lib/bd.php');
+  include_once($root.'/lib/bd.php');
   $id = $_REQUEST['id'];
   if ($_SESSION['status']=='admin')
     {
@@ -26,20 +27,20 @@ if (isset($_SESSION['user_id']))
     <html>
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title><?php echo $ini['Title_edit_user']; ?></title>
+    <title><?php echo t('Edit account - SH'); ?></title>
     </head>
     
     <body>
 	<table width="100%" border="0">
 	  <tr>
-		<?php include ($root.'/bloks/blok_user.php');?>
-		<?php include ($root.'/bloks/blok_lenguage.php');?>
+		<?php include_once ($root.'/bloks/blok_user.php');?>
+		<?php include_once ($root.'/bloks/blok_lenguage.php');?>
 	  </tr>
 	</table>
 
     <table width="100%" border="0">
       <tr>
-	<?php include ('bloks/header.php');?>
+	<?php include_once ('bloks/header.php');?>
       </tr>
       <tr>
 	<td><table width="100%" border="0">
@@ -49,13 +50,13 @@ if (isset($_SESSION['user_id']))
 		  &nbsp;
 	      </tr>
 	      <tr>
-		 <?php include ($root.'/bloks/left_menu.php');?>
+		 <?php include_once ($root.'/bloks/left_menu.php');?>
 	      </tr>
 	    </table></td>
 	    <td width="86%" align="left" valign="top">
-	      <?php include ($root.'/lib/update_user.php')?>
+	      <?php include_once ($root.'/lib/update_user.php')?>
 	     <form name="form1" method="post" enctype="multipart/form-data" action="">
-		 <h2><?php echo $ini['Login'].' '.$data['login']; ?></h2>
+		 <h2><?php echo t('Login').' '.$data['login']; ?></h2>
 		 <?php
 		      if ($_SESSION['status']=='admin')
 		      { ?>
@@ -74,13 +75,13 @@ if (isset($_SESSION['user_id']))
 		    <label for="file">avatar</label><br><input name="file" type="file"><br>
 		    <input type="hidden" name="MAX_FILE_SIZE" value="3000">
 		      
-		    <?php print $ini['Name']; ?>   <br><input name="name" type="text" value="<?php echo $data['name'] ?>"  size="30"><br>
-		    <?php print $ini['Surname']; ?><br><input name="surname" type="text" value="<?php echo $data['surname'] ?>"  size="30"><br>
-		    <?php echo $ini['Pass']; ?>    <br><input name="pass" type="password" size="30"><br>
-		    <?php echo $ini['R_pass']; ?>  <br><input name="r_pass" type="password" size="30"><br>
-		    <?php echo $ini['E_mail']; ?>  <br><input name="email" type="text" value="<?php echo $data['e_mail'] ?>" size="30"><br>
+		    <?php print t('Name'); ?>   <br><input name="name" type="text" value="<?php echo $data['name'] ?>"  size="30"><br>
+		    <?php print t('Surname'); ?><br><input name="surname" type="text" value="<?php echo $data['surname'] ?>"  size="30"><br>
+		    <?php echo t('Password'); ?>    <br><input name="pass" type="password" size="30"><br>
+		    <?php echo t('Re-enter password'); ?>  <br><input name="r_pass" type="password" size="30"><br>
+		    <?php echo t('e-mail'); ?>  <br><input name="email" type="text" value="<?php echo $data['e_mail'] ?>" size="30"><br>
 											   <input name="id" type="hidden" value="<?php print $id;?>">
-											   <input name="update" type="submit" value="<?php echo $ini['Ok_cont']; ?>">
+											   <input name="update" type="submit" value="<?php echo t('Save'); ?>">
 	     </form>
 	     
 	    </td>
@@ -88,7 +89,7 @@ if (isset($_SESSION['user_id']))
 	</table></td>
       </tr>
       <tr>
-	<?php include ($root.'/bloks/footer.php');?>
+	<?php include_once ($root.'/bloks/footer.php');?>
       </tr>
     </table>
     </body>
@@ -96,8 +97,15 @@ if (isset($_SESSION['user_id']))
 <?php
   }
   else
-    die($ini['Error'].' <a href="/site/index.php?lang='.$lang.'">'.$ini['Start_page'].'</a>');
+	{
+		$error = t('Error');
+		$start_page = t('Start Page');
+    die($error.' <a href="/site/index.php">'.$start_page.'</a>');
+	}
 }
-else 
-    die($ini['Nologin'].' <a href="/site/index.php?lang='.$lang.'">'.$ini['Start_page'].'</a>');
+else {
+	$nologin = t('You are not authorized to access this page');
+	$start_page = t('Start Page');
+    die($nologin.' <a href="/site/index.php">'.$start_page.'</a>');
+}
 ?>

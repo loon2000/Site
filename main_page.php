@@ -2,8 +2,9 @@
 session_start();
 $root = '/var/www/site';
 error_reporting(E_ALL | E_STRICT | E_NOTICE);
-include($root.'/lib/lang.php');
-include($root.'/lib/login.php');
+include_once($root.'/lib/lang.php');
+include_once($root.'/lib/login.php');
+include_once($root.'/lib/function_global.php');
 if (isset($_SESSION['user_id'])) 
 {
 	?>
@@ -11,7 +12,7 @@ if (isset($_SESSION['user_id']))
 	<html>
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title><?php echo $ini['Title_main'];?></title>
+	<title><?php echo t('Main page - SH');?></title>
 	</head>
 
 	<body>
@@ -48,6 +49,9 @@ if (isset($_SESSION['user_id']))
 	</html>
 	<?php 
 }
-else 
-	die($ini['Nologin'].' <a href="/site/index.php?lang='.$lang.'">'.$ini['Start_page'].'</a>');
+else {
+	$nologin = t('You are not authorized to access this page');
+	$start_page = t('Start Page');
+    die($nologin.' <a href="/site/index.php">'.$start_page.'</a>');
+}
 ?>

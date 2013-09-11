@@ -13,7 +13,7 @@ if (isset($_SESSION['user_id']))
   <html>
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title><?php echo $ini['Title_translate'];?></title>
+  <title><?php print t('Website translation -SH');?></title>
   </head>
   
   <body>
@@ -45,13 +45,19 @@ if (isset($_SESSION['user_id']))
 			  </table>
 			</td>
 			<td width="86%" align="left" valign="top">
-			  <?php include($root.'/lib/update_lang.php'); 
-              print '<h2>'.$ini['Translate'].'</h2>';?>
+			  <?php include($root.'/lib/update_lang.php');
+              if (isset($_GET['m']))
+              {
+               print t('Update');
+              }
+              print '<h2>'.t('Website translation').'</h2>';?>
         <form name="form" method="post" action="">
-         <p>Введіть рядок тексту для пошуку<br>
+         <p><img src="/site/img/en.png" width="20"><?php print ' '.t('Enter the text string to search');?><br>
          <input name="search" type="text" size="50"><br>
-         Переклад<br>
-         <input name="traslate" type="text" size="50"</p>
+         <img src="/site/img/ua.png" width="20"> Переклад<br>
+         <input name="traslate_ua" type="text" size="50"><br>
+         <img src="/site/img/ru.png" width="20"> Перевод<br>
+         <input name="traslate_ru" type="text" size="50"</p>
          <p><input name="ok" type="submit" value="OK"></p>
         </form>
 
@@ -70,7 +76,8 @@ if (isset($_SESSION['user_id']))
   }
 }
 else {
-    die($ini['Nologin'].' <a href="/site/index.php?lang='.$lang.'">'.$ini['Start_page'].'</a>');
+    $nologin = t('You are not authorized to access this page.');
+    die($nologin.' <a href="/site/index.php">'.$ini['Start_page'].'</a>');
 }?>
 
 

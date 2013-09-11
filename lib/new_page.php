@@ -16,7 +16,8 @@ if (isset($_SESSION['user_id']))
 					$_POST['text_ru'],
 					$_POST['text_en']
 				);
-				formCorrect($post_page,$ini['Error1']);
+				$error1 = t('You did not fill the field');
+				formCorrect($post_page,$error1);
 				$post_page = formEkran($post_page);
 				include($root.'/lib/bd.php');
 				$result = mysql_query ("INSERT
@@ -28,14 +29,15 @@ if (isset($_SESSION['user_id']))
 																		 $_SESSION[user_id])") or die(mysql_error());
 				if ($result)
 			 {
-				 header('Location: /site/main_page.php?lang='.$lang.'&masege='.$ini['Update']);
+				 $update = t('Update');
+				 header('Location: /site/main_page.php?masege='.$update);
 				 die();
 			 }
 				else
-				 print $ini['No_update'];
+				 print t('Error, try again later');
 		}
 	}
 }
 else 
-    print $ini['Nologin'];
+    print t('You are not authorized to access this page');
 ?>

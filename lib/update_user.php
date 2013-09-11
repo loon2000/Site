@@ -1,6 +1,6 @@
 <?php
 $root = '/var/www/site';
-include($root.'/lib/lang.php');
+include_once($root.'/lib/lang.php');
 include_once($root.'/lib/function_global.php');
 if (isset($_SESSION['user_id'])) 
 {
@@ -9,7 +9,7 @@ if (isset($_SESSION['user_id']))
 		if( isset($_POST['pass'], $_POST['r_pass'], $_POST['email'], $_POST['id']))
 		{
 			$id = $_POST['id'];
-			include($root.'/lib/bd.php');
+			include_once($root.'/lib/bd.php');
 			$correct = pass_r_pass();
 			if ($correct)
 			{
@@ -64,24 +64,29 @@ if (isset($_SESSION['user_id']))
 													WHERE id='$id'") or die(mysql_error());
 							if ($result)
 							{
-							header ('Location: /site/profile.php?id='.$id.'&lang='.$lang.'&masege='.$ini['Update']);
-							die();
+								$update = t('Update');
+								header ('Location: /site/profile.php?id='.$id.'&masege='.$update);
+								die();
 							}
 							else 
-								print $ini['No_update'];
+								print t('Error, try again later');
 				}
 				else
 				{
-					print $ini['Error1'];
+					print t('You did not fill the field');
 				}
 			}
 			else
-				print $ini['Error2'];		
+				print t('Passwords mismatch');		
 		}
 		else 
-			print $ini['Error1'];
+				print t('You did not fill the field');
 	}
 }
-else 
-    die($ini['Nologin'].' <a href="/site/index.php?lang='.$lang.'">'.$ini['Start_page'].'</a>');
+else
+{
+		$nologin = t('You are not authorized to access this page');
+		$start_page = t('Start Page');
+    die($nologin.' <a href="/site/index.php">'.$start_page.'</a>');
+}
 ?>

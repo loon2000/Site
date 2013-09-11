@@ -4,43 +4,32 @@ if (isset($_POST['ok']))
  include_once($root.'/lib/bd.php');
  $trans = array(
   $_POST['search'],
-  $_POST['traslate']
+  $_POST['traslate_ua'],
+  $_POST['traslate_ru']
   );
- formCorrect($trans,$ini['Error1']);
+ $error1 = t('You did not fill the field');
+ formCorrect($trans,$error1);
  $trans = formEkran($trans);
- $result = langSelectBd($lang,$trans[0]);
+ $result = langSelectBd('en',$trans[0]);
   if (mysql_num_rows($result) != 0) 
   {
    $data = mysql_fetch_array($result);
-   $result = langSelectBd($lang,$trans[1]);
-   if (mysql_num_rows($result) != 0) 
+   $id = $data['id'];
+   $result = mysql_query ("UPDATE lang
+                           SET  ua = '$trans[1]', ru = '$trans[2]' 
+                           WHERE id = '$id'") or die(mysql_error());
+   if ($result)
    {
-    print 'Такий текст перекладу уже існує';
+    header ('Location: /site/websitetranslation.php?m=1');
    }
    else
    {
-    $id = $data['id'];
-    $result = mysql_query ("UPDATE lang
-                            SET  $lang = '$trans[1]'
-                            WHERE id = '$id'") or die(mysql_error());
-    if ($result)
-    {
-     print 'Успішно оновлено';
-    }
-    else
-    {
-     print 'Не оновленно';
-    }
+    print t('Error, try again later');
    }
   }
   else
   {
-   print 'Текст не знайдено<br>';
-   print $lang.'<br>';
-   print $trans['0'].'<br>';
-   print $trans['1'].'<br>';
-   
+   print t('Text not found').'<br>';
   }
 }
-else print 'Ой!';
 ?>

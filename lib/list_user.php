@@ -1,6 +1,6 @@
 <?php 
-	include($root.'/lib/bd.php');
-	include($root.'/lib/lang.php');
+	include_once($root.'/lib/bd.php');
+	include_once($root.'/lib/lang.php');
 	if (isset($_REQUEST['masege']))
 		print '<p>'.$_REQUEST['masege'].'</p>';
 
@@ -14,19 +14,19 @@
 			{
 				print '<img src="'.$data['avatar'].'" width="150" height="150"/><br>';
 		    }
-		    print '<p>'.$ini['Login'].' '.$data['login'];
-			print '<br>'.$ini['Name'].' '.$data['name'];
-			print '<br>'.$ini['Surname'].' '.$data['surname'];
+		    print '<p>'.t('Login').' '.$data['login'];
+			print '<br>'.t('Name').' '.$data['name'];
+			print '<br>'.t('Surname').' '.$data['surname'];
 			
 			if (isset($_SESSION['user_id']))
 			{
-				print '<br>'.$ini['E_mail'].' '.$data['e_mail'];
+				print '<br>'.t('e-mail').' '.$data['e_mail'];
 				if (isset($_SESSION['status']))
 				{
 					if ($_SESSION['status']=='admin')
 					{
-						print '<p><a href="edit_user.php?id='.$data['id'].'&lang='.$lang.'">'.$ini['Edit'].'</a>';  
-						print '<br><a href="lib/del_user.php?id='.$data['id'].'&lang='.$lang.'">'.$ini['Del'].'</a>';
+						print '<p><a href="edit_user.php?id='.$data['id'].'">'.t('Edit').'</a>';  
+						print '<br><a href="lib/del_user.php?id='.$data['id'].'">'.t('Delete').'</a>';
 						print '</p>';
 					}
 				}

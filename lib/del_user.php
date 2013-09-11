@@ -13,7 +13,8 @@ if (isset($_SESSION['user_id']))
 		  $data = mysql_fetch_array($result);
 		  if(empty($data['id']))
 		  {
-		      die($ini['Error']);
+		     $error = t('Error');
+				 die($error);
 		  }
 		  else
 		  {	
@@ -22,22 +23,21 @@ if (isset($_SESSION['user_id']))
 					    WHERE id='$_REQUEST[id]'") or die(mysql_error());
 			   if ($data)
 			   {
-				    $old_page = 'http://localhost/site/users.php?lang=%s';
-					if ($_SERVER['HTTP_REFERER']== sprintf($old_page,'ua')
-						|| $_SERVER['HTTP_REFERER']== sprintf($old_page,'ru')
-						|| $_SERVER['HTTP_REFERER']== sprintf($old_page,'en'))
-				    {
-					header('Location: '.$_SERVER['HTTP_REFERER']);     
-				    }
+					if ($_SERVER['HTTP_REFERER']=='http://localhost/site/users.php')
+				  {
+									header('Location: '.$_SERVER['HTTP_REFERER']);     
+				  }
 				    else
 				    {
-					 header ('Location: /site/index.php?lang='.$lang.'&masege='.$ini['Delete']);    
+							$delete = t('Post deleted');
+							header ('Location: /site/index.php?masege='.$delete);    
 				    }
 				    die();
 			   }
 			    else
 			    {
-				    header ('Location: /site/profile.php?lang='.$lang.'&masege='.$ini['Error']);
+				    $error = t('Error');
+						header ('Location: /site/profile.php?masege='.$error);
 				    die();
 			    }
 		  }

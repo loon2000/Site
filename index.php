@@ -8,14 +8,14 @@ include_once($root.'/lib/function_global.php');
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title><?php echo $ini['Title_start']; ?></title>
+<title><?php echo t('Welcome - SH'); ?></title>
 </head>
 
 <body>
   <table width="100%" border="0">
 	<tr>
-	  <?php include ($root.'/bloks/blok_user.php');?>
-	  <?php include ($root.'/bloks/blok_lenguage.php');?>
+	  <?php include_once ($root.'/bloks/blok_user.php');?>
+	  <?php include_once ($root.'/bloks/blok_lenguage.php');?>
 	</tr>
   </table>
 
@@ -31,24 +31,24 @@ include_once($root.'/lib/function_global.php');
           <tr>
           </tr>
           <tr>
-             <?php include ($root.'/bloks/left_login.php');?>
+             <?php include_once ($root.'/bloks/left_login.php');?>
           <tr>
             <td align="center">
-            <a href="/site/users.php?lang=<?php echo $_REQUEST['lang']; ?>"><?php echo $ini['Users']; ?></a>
+            <a href="/site/users.php"><?php echo t('Users'); ?></a>
             </td>
           </tr>
           </tr>
         </table></td>
         <td width="86%" align="left" valign="top">
         <?php
-        print $ini['Text_start'];
-        include ($root.'/lib/main.php');
+        print t('Enter your login and password');
+        include_once ($root.'/lib/main.php');
         ?></td>
       </tr>
     </table></td>
   </tr>
   <tr>
-    <?php include ($root.'/bloks/footer.php');?>
+    <?php include_once ($root.'/bloks/footer.php');?>
   </tr>
 </table>
 </body>

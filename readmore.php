@@ -1,17 +1,19 @@
 <?php 
 session_start();
 $root = '/var/www/site';
-include($root.'/lib/lang.php');
+include_once($root.'/lib/lang.php');
 include_once($root.'/lib/bd.php');
 include_once($root.'/lib/function_global.php');
 $result = mysql_query("SELECT * FROM page WHERE id='$_REQUEST[id]'") or die(mysql_error());
 $data = mysql_fetch_array($result);
+$title_page = 'title_'.$_SESSION['user_lang'];
+$text_page = 'text_'.$_SESSION['user_lang'];
 ?>
  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
  <html>
  <head>  
  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
- <title><?php echo $data['title_page'];?></title>
+ <title><?php echo $data[$title_page];?></title>
  </head>
 
  <body>
@@ -38,13 +40,18 @@ $data = mysql_fetch_array($result);
            </tr>
          </table></td>
          <td width="86%" align="left" valign="top">
-              <?php back('<img src="/site/img/back_button.png" width="40" >')?>
-              <h2>
               <?php
-              $title_page = titleTextLanguage($lang);
-              $text_page = textLanguage($lang);
-              echo $data[$title_page];?></h2>
-              <?php echo $data[$text_page];?>
+              back('<img src="/site/img/back_button.png" width="40" >');
+              print '<hr>';
+              print '<h2>';
+              print $data[$title_page].'</h2>';
+              print '<p>'.$data[$text_page].'</p>';
+              print '<hr>';
+              print '<h2>'.t('Comments').'</h2>';
+              include_once ($root.'/lib/comments.php');
+              print '<hr>';
+              include_once ($root.'/lib/add_com.php');
+              ?>
          </td>
        </tr>
      </table></td>

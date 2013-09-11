@@ -9,7 +9,7 @@ if(isset($_POST['ok']))
         $login = stripslashes(trim(mysql_real_escape_string($_POST['login'])));
 		$email = stripslashes(trim(mysql_real_escape_string($_POST['email'])));
         if(empty($login) || empty($email))
-            print $ini['Error1'];
+            print t('You did not fill the field');
         else
         {  
         include_once($root.'/lib/bd.php');
@@ -25,14 +25,19 @@ if(isset($_POST['ok']))
 				sendmail($email,$pass);
 				$pass1 = password($pass);
 				updateBdpass($pass1,$id);
-				header ('Location: /site/index.php?lang='.$lang.'&masege='.$ini['Pass_email'].' '.$email);
+				$pass_email = t('Your new password has been sent to the');
+				header ('Location: /site/index.php?masege='.$pass_email.' '.$email);
 				die();		    
 			}
 	    else 
-		print $ini['Error_acc'];
+		print t('Error. Maybe you are not registered with us?');
 	}	
     }
 else      
-    die ($ini['Error1'].' <a href="/site/new_pass.php?lang='.$lang.'">'.$ini['New_pass'].'</a>');
+    {
+				$error1 = t('You did not fill the field');
+				$new_pass = t('Request password');
+				die ($error1.' <a href="/site/new_pass.php">'.$new_pass.'</a>');
+		}
 }
 ?>

@@ -1,12 +1,13 @@
 <?php
 function formCorrect($mass,$error){
-				foreach ($mass as $value) {
-						if (empty($value))
-						{
-										die($error);
-						}
+		foreach ($mass as $value) {
+				$value = trim($value);
+				if (empty($value))
+				{
+								die($error);
 				}
-				unset($value);
+		}
+		unset($value);
 }
 function formEkran($mass){
 				foreach ($mass as $key => $value) {
@@ -24,18 +25,11 @@ function selectUserId($id){
 				}
 }
 function titleTextLanguage($lang){
-	switch ($lang) {
-    case 'ua': return 'title_ua';
-    case 'ru': return 'title_ru';
-    case 'en': return 'title_en';
-	}
+		return 'title_' . $lang;
 }
-function textLanguage($lang){
-	switch ($lang) {
-    case 'ua': return 'text_ua';
-    case 'ru': return 'text_ru';
-    case 'en': return 'text_en';
-	}
+function textLanguage($lang){ 
+		return 'text_'.$lang;
+	
 }
 
 function registrationCorrect(){
@@ -128,7 +122,7 @@ function Dataintroduced($b,$c,$id){
 
 }
 function Dataimg($id){
-        include_once('bd.php');
+        sitebdConect();
         $result=mysql_query("SELECT * 
                             FROM user 
                             WHERE id='$id'") or die(mysql_error());
@@ -138,8 +132,12 @@ function Dataimg($id){
 function back($textlink){
   if (isset($_SERVER['HTTP_REFERER']))
   {
-     print '<a href="'.$_SERVER['HTTP_REFERER'].'">'.$textlink.'</a>';
+    print '<a href="'.$_SERVER['HTTP_REFERER'].'">'.$textlink.'</a>';
   }
+	else
+	{
+		print '<a href="">'.$textlink.'</a>';
+	}
 }
 function updatePage($link,$ini_update){
     print '<a href="'.$link.'">'.$ini_update.'</a>';
@@ -154,9 +152,51 @@ function generatePassword(){
   return $string;
 }
 function updateBdpass($pass,$id){
-	$result_update = mysql_query ("UPDATE user 
+		sitebdConect();
+		$result_update = mysql_query ("UPDATE user 
 									SET  pass='$pass'
 									WHERE id='$id'") or die(mysql_error());
+}
+function updateBdLang($lang,$user_id){
+		sitebdConect();
+		$result_update = mysql_query ("UPDATE user 
+									SET  lang='$lang'
+									WHERE id='$user_id'") or die(mysql_error());
+}
+function t($translate){
+		sitebdConect();
+		if(isset($_SESSION['user_id']) and !isset($_SESSION['user_lang'])){
+				
+				$user_id = $_SESSION['user_id'];
+				$resultuser=mysql_query("SELECT * 
+																FROM user 
+																WHERE id='$user_id'") or die(mysql_error());
+				$datauser = mysql_fetch_array($resultuser);
+				$user_lang = $datauser['lang'];
+		}
+		else
+		{
+				$user_lang = $_SESSION['user_lang'];
+		}
+		$resultlang=mysql_query("SELECT * 
+														FROM lang 
+														WHERE en='$translate'") or die(mysql_error());
+		if (mysql_num_rows($resultlang) != 0)
+		{
+				$datalang = mysql_fetch_array($resultlang);
+				return $datalang[$user_lang];
+		}
+		else
+		{
+				$resultadd = mysql_query ("INSERT INTO lang (en)
+									   VALUES('$translate')");
+				if($resultadd) return $translate;
+		}
+}
+function sitebdConect(){
+		$bd = mysql_connect('localhost','site','site');
+		mysql_query("SET NAMES utf8");
+		mysql_select_db('sitebd',$bd);
 }
 function sendmail($email,$pass){
 	mail(
@@ -167,4 +207,5 @@ function sendmail($email,$pass){
 		"From:admin@sitehome",
 		"Reply-To:admin@sitehome")));
 }
-    ?>
+
+?>

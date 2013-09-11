@@ -1,7 +1,8 @@
 <?php 
 session_start();
 $root = '/var/www/site';
-include($root.'/lib/lang.php');
+include_once($root.'/lib/lang.php');
+include_once($root.'/lib/function_global.php');
 if (isset($_SESSION['user_id']))
 {
   if ($_SESSION['status']=='admin' or $_SESSION['status']=='editor')
@@ -12,7 +13,7 @@ if (isset($_SESSION['user_id']))
   <html>
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title><?php echo $ini['Title_cr_cont'];?></title>
+  <title><?php echo t('Create content - SH');?></title>
   </head>
   
   <body>
@@ -55,7 +56,7 @@ if (isset($_SESSION['user_id']))
 				<p>Text in English<br><textarea name="text_en" cols="100" rows="40"></textarea></p>
 				<p>Текст українською<br><textarea name="text_ua" cols="100" rows="40"></textarea></p>
 				<p>Текст на русском<br><textarea name="text_ru" cols="100" rows="40"></textarea></p>
-				<p><input name="pub" type="submit" value="<?php echo $ini['Ok_cont'];?>"></p>
+				<p><input name="pub" type="submit" value="<?php echo t('Save');?>"></p>
 			  </form>
 			</td>
 		  </tr>
@@ -72,5 +73,7 @@ if (isset($_SESSION['user_id']))
   }
 }
 else {
-    die($ini['Nologin'].' <a href="/site/index.php?lang='.$lang.'">'.$ini['Start_page'].'</a>');
+	$nologin = t('You are not authorized to access this page');
+	$start_page = t('Start Page');
+    die($nologin.' <a href="/site/index.php">'.$start_page.'</a>');
 }?>

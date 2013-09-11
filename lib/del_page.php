@@ -1,12 +1,12 @@
 <?php 
 session_start();
 $root = '/var/www/site';
-include($root.'/lib/lang.php');
+include_once($root.'/lib/lang.php');
 if (isset($_SESSION['user_id'])) 
 {
   if ($_SESSION['status']=='admin' or $_SESSION['status']=='editor')
   {
-	 include($root.'/lib/bd.php');
+	 include_once($root.'/lib/bd.php');
 	 $result = mysql_query("SELECT id
 			       FROM page
 			       WHERE id='$_REQUEST[id]'") or die (mysql_error());
@@ -15,7 +15,8 @@ if (isset($_SESSION['user_id']))
 		  $data = mysql_fetch_array($result);
 		  if(empty($data['id']))
 		  {
-		      die($ini['Error']);
+				 $error = t('Error');
+		     die($error);
 		  }
 		  else
 		  {	
@@ -24,12 +25,14 @@ if (isset($_SESSION['user_id']))
 					    WHERE id='$_REQUEST[id]'") or die(mysql_error());
 			   if ($data)
 			   {
-				    header ('Location: /site/main_page.php?lang='.$lang.'&masege='.$ini['Delete']);
+				    $delete = t('Post deleted');
+				    header ('Location: /site/main_page.php?masege='.$delete);
 				    die();
 			   }
 			    else
 			    {
-				    header ('Location: /site/main_page.php?lang='.$lang.'&masege='.$ini['Error']);
+						$error = t('Error');	
+				    header ('Location: /site/main_page.php?masege='.$error);
 				    die();
 			    }
 		  }
