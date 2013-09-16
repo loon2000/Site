@@ -207,5 +207,42 @@ function sendmail($email,$pass){
 		"From:admin@sitehome",
 		"Reply-To:admin@sitehome")));
 }
-
+function pagelist($page,$total){
+				$npage = array(
+								'perv' => '',
+								'next' => '',
+								'left1' => '',
+								'left2' => '',
+								'right1' => '',
+								'right2' => ''
+				);
+				if (isset($_SERVER['QUERY_STRING']))
+				{
+						$pos = strpos($_SERVER['QUERY_STRING'],'page');
+						if ($pos)
+						{
+								$pos--;
+								$s = '?'.substr($_SERVER['QUERY_STRING'],0,$pos).'&';
+						}
+						else
+						{
+								$s = '?'.$_SERVER['QUERY_STRING'].'&';
+						}
+				}
+				else
+				{
+						$s = '?';
+				}
+				if ($page != 1) $npage['perv'] = '<a href= '.$_SERVER['SCRIPT_NAME'].$s.'page=1><<</a> 
+																			 <a href= '.$_SERVER['SCRIPT_NAME'].$s.'page='. ($page - 1) .'><</a> '; 
+				if ($page != $total) $npage['next'] = ' <a href= '.$_SERVER['SCRIPT_NAME'].$s.'page='. ($page + 1) .'>></a> 
+																					 <a href= '.$_SERVER['SCRIPT_NAME'].$s.'page=' .$total. '>>></a>'; 
+				
+				if($page - 2 > 0) $npage['left2'] = ' <a href= '.$_SERVER['SCRIPT_NAME'].$s.'page='. ($page - 2) .'>'. ($page - 2) .'</a> | ';
+				if($page - 1 > 0) $npage['left1'] = '<a href= '.$_SERVER['SCRIPT_NAME'].$s.'page='. ($page - 1) .'>'. ($page - 1) .'</a> | ';
+				if($page + 2 <= $total) $npage['right2'] = ' | <a href= '.$_SERVER['SCRIPT_NAME'].$s.'page='. ($page + 2) .'>'. ($page + 2) .'</a>';
+				if($page + 1 <= $total) $npage['right1'] = ' | <a href= '.$_SERVER['SCRIPT_NAME'].$s.'page='. ($page + 1) .'>'. ($page + 1) .'</a>';
+				
+				print $npage['perv'].$npage['left2'].$npage['left1'].'<b>'.$page.'</b>'.$npage['right1'].$npage['right2'].$npage['next']; 
+}
 ?>

@@ -41,6 +41,7 @@ $text_page = 'text_'.$_SESSION['user_lang'];
          </table></td>
          <td width="86%" align="left" valign="top">
               <?php
+              include_once($root.'/lib/new_com.php');
               back('<img src="/site/img/back_button.png" width="40" >');
               print '<hr>';
               print '<h2>';
