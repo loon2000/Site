@@ -46,6 +46,8 @@ $text_page = 'text_'.$_SESSION['user_lang'];
               print '<hr>';
               print '<h2>';
               print $data[$title_page].'</h2>';
+              rating ($data['id']);
+              if (isset($_SESSION['user_id'])) userrating($data['id']);
               print '<p>'.$data[$text_page].'</p>';
               print '<hr>';
               print '<h2>'.t('Comments').'</h2>';

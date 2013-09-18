@@ -7,6 +7,7 @@ if (isset($_REQUEST['masege']))
 
 $result = mysql_query("SELECT *  FROM page
 											ORDER BY id DESC") or die(mysql_error());
+
 if ($result)
 {
 	while ($data = mysql_fetch_array($result)) 
@@ -14,6 +15,7 @@ if ($result)
 		$title_page = titleTextLanguage($_SESSION['user_lang']);
 		$text_page = textLanguage($_SESSION['user_lang']);
 		print '<h1>'.$data[$title_page].'</h1>';
+		rating ($data['id']);
 		if (isset($_SESSION['user_id']))
 		{
 				$data2 = selectUserId($data['autor']);
@@ -32,13 +34,12 @@ if ($result)
 		if (strlen($data[$text_page])>150)
 		{
 			echo substr($data[$text_page],0,150)."...<br>";
-			echo '<a href="/site/readmore.php?id='.$data['id'].'">['.t('Read More').'</a>]<br>';
 		}
 		else 
 		{
 			echo $data[$text_page];
-		}		
-
+		}
+		echo '<a href="/site/readmore.php?id='.$data['id'].'">['.t('Read More').'</a>]<br>';
 	}
 }
 ?>
