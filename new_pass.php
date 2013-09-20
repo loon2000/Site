@@ -7,44 +7,42 @@ include_once($root.'/lib/function_global.php');?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title><?php echo t('Request password')?></title>
+    <link rel="stylesheet" href="images/style.css" type="text/css" />
 </head>
 
 <body>
-  <table width="100%" border="0">
-	<tr>
-	  <?php include ($root.'/bloks/blok_lenguage.php');?>
-	</tr>
-  </table>
+<div class="content">
+    <div class="preheader">
+        <div class="padding"> <?php include_once ($root.'/bloks/blok_user.php');?> &nbsp;  </div>
+    </div>
+    <div class="header">
+        <div class="title">Ukraine</div>
+        <div class="slogan">Site of the country</div>
+        <div class="lang"><?php include_once ($root.'/bloks/blok_lenguage.php');?></div>
 
-<table width="100%" border="0">
-  <tr>
-    <?php include ($root.'/bloks/header.php');?>
-  </tr>
-  <tr>
-    <td><table width="100%" border="0">
-      <tr>
-        <td width="14%" align="left" valign="top" bgcolor="#2B98FF"><table width="100%" border="0">
-          <tr>
-		  </tr>
-        </table></td>
-        <td width="86%" align="left" valign="top">
-			<?php include($root.'/lib/update_pass.php');
-			back('<img src="/site/img/back_button.png" width="40" >');
-			?>
-         <form name="form1" method="post" action="">
-             <h2><?php echo t('Request password');?></h2>
-             <p><?php echo t('Login');?><br><input name="login" type="text" size="30"><br>
-                <?php echo t('e-mail');?><br><input name="email" type="text" size="30">
-             </p>
-             <p><input name="ok" type="submit" value="OK"></p>
-         </form>
-        </td>
-      </tr>
-    </table></td>
-  </tr>
-  <tr>
-    <?php include ($root.'/bloks/footer.php');?>
-  </tr>
-</table>
+    </div>
+    <div id="nav">
+        <ul>
+            <li><a href="/site/index.php">Home</a></li>
+            <li><a href="/site/users.php"><?php echo t('Users'); ?></a></li>
+            <?php include_once ($root.'/bloks/left_menu.php');?>
+        </ul>
+    </div>
+    <div class="main_content">
+        <div class="sd_right">
+            <div class="text_padding">
+
+            </div>
+        </div>
+        <div class="sd_left">
+            <div class="text_padding">
+                <?php newpass();?>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="padding"> Powered by Andriy Tkachuk  </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

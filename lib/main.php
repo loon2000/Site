@@ -16,13 +16,8 @@ if ($result)
 		$text_page = textLanguage($_SESSION['user_lang']);
 		print '<h1>'.$data[$title_page].'</h1>';
 		rating ($data['id']);
-		if (isset($_SESSION['user_id']))
-		{
 				$data2 = selectUserId($data['autor']);
-				if ($data2)
-					print '<p>'.t('Author').': <a href="/site/profile.php?id='.$data2['id'].'">'.$data2['login'].'</a></p>';
-				
-		}
+				if ($data2)	print '<p>'.t('Author').': <a href="/site/profile.php?id='.$data2['id'].'">'.$data2['login'].'</a></p>';
 		if (isset($_SESSION['status'],$_SESSION['user_id']))
 		{
 			if ($_SESSION['status'] == 'admin' || $_SESSION['user_id'] == $data['autor'])
