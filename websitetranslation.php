@@ -1,58 +1,13 @@
-<?php 
-session_start();
-$root = '/var/www/site';
-include_once($root.'/lib/lang.php');
-include_once($root.'/lib/function_global.php');
+<?php
+include_once('part1.php');
+print t('Website translation -SH');
+include_once('part11.php');
+?><script type="text/javascript" src="scr/webtrans.js"></script>
+<?php
+include_once('part2.php');
+loginuser();
+include_once('part3.php');
+  print '<h2>'.t('Website translation').'</h2>';
+  webtransl();
+include_once('part4.php');
 ?>
-  <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-  <html>
-  <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title><?php print t('Website translation -SH');?></title>
-      <link rel="stylesheet" href="images/style.css" type="text/css" />
-  </head>
-
-  <body>
-  <div class="content">
-      <div class="preheader">
-          <div class="padding"> <?php include_once ($root.'/bloks/blok_user.php');?> &nbsp;  </div>
-      </div>
-      <div class="header">
-          <div class="title">Ukraine</div>
-          <div class="slogan">Site of the country</div>
-          <div class="lang"><?php include_once ($root.'/bloks/blok_lenguage.php');?></div>
-
-      </div>
-      <div id="nav">
-          <ul>
-              <li><a href="/site/index.php">Home</a></li>
-              <li><a href="/site/users.php"><?php echo t('Users'); ?></a></li>
-              <?php include_once ($root.'/bloks/left_menu.php');?>
-          </ul>
-      </div>
-      <div class="main_content">
-          <div class="sd_right">
-              <div class="text_padding">
-                  <?php loginuser();?>
-              </div>
-          </div>
-          <div class="sd_left">
-              <div class="text_padding">
-                  <?php
-                  if (isset($_GET['m']))
-                  {
-                      print t('Update');
-                  }
-                  print '<h2>'.t('Website translation').'</h2>';
-                  webtransl();
-                  ?>
-              </div>
-          </div>
-          <div class="footer">
-              <div class="padding"> Powered by Andriy Tkachuk  </div>
-          </div>
-      </div>
-  </div>
-  </body>
-  </html>
-

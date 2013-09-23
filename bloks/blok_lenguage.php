@@ -1,6 +1,6 @@
 <?php
 $root = '/var/www/site';
-include_once($root.'/lib/lang.php');?>
+lang();?>
 <td width="10%" align="right">
         <form name="formlang" method="post" action="">
             <input type="submit" class="uasubmit" name="sendua"/>
@@ -8,4 +8,3 @@ include_once($root.'/lib/lang.php');?>
             <input type="submit" class="ensubmit" name="senden"/>
         </form>
 </td>
-

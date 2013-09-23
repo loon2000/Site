@@ -1,8 +1,8 @@
 <?php
 if (isset($_SESSION['user_id']))
 	{
-		include_once($root.'/lib/bd.php');
-		$result = mysql_query("SELECT * 
+		sitebdConect();
+		$result = mysql_query("SELECT *
 					FROM user 
 					WHERE id='$_SESSION[user_id]'") or die(mysql_error()); 
 		if ($result)

@@ -54,7 +54,9 @@ function registrationCorrect(){
 	if (empty($_POST['email'])) return false;
     if (!preg_match("#^[0-9a-z_\-\.]+@[0-9a-z\-\.]+\.[a-z]{2,6}$#", $_POST['email'])) return false;
 	if (!preg_match("#^[0-9a-z]#", $_POST['login'])) return false;
-	if (strlen($_POST['pass']) < 3) return false;
+    if (!preg_match("#^[0-9a-z]#", $_POST['pass'])) return false;
+	if (strlen($_POST['pass']) < 6) return false;
+    if (strlen($_POST['pass']) > 16) return false;
  	if ($_POST['pass'] != $_POST['r_pass']) return false;
     
 	$login = stripslashes(trim(mysql_real_escape_string($_POST['login'])));
@@ -88,8 +90,8 @@ function langSelectBd($column,$text_s){
 function pass_r_pass_empty($pass,$r_pass,$c,$id){
     if (empty($_POST['r_pass']) && empty($_POST['pass']))
     {	
-        include_once('bd.php');
-        $result=mysql_query("SELECT * 
+        sitebdConect();
+        $result=mysql_query("SELECT *
                             FROM user 
                             WHERE id='$id'") or die(mysql_error());
         $data = mysql_fetch_array($result);
@@ -120,8 +122,8 @@ function password($a){
 function Dataintroduced($b,$c,$id){
     if (empty($b))
     {
-        include_once('bd.php');
-        $result=mysql_query("SELECT * 
+        sitebdConect();
+        $result=mysql_query("SELECT *
                             FROM user 
                             WHERE id='$id'") or die(mysql_error());
         $data = mysql_fetch_array($result);
@@ -142,19 +144,6 @@ function Dataimg($id){
                         WHERE id='$id'") or die(mysql_error());
     $data = mysql_fetch_array($result);
     return $data['avatar'];
-}
-function back($textlink){
-    if (isset($_SERVER['HTTP_REFERER']))
-    {
-        print '<a href="'.$_SERVER['HTTP_REFERER'].'">'.$textlink.'</a>';
-    }
-    else
-    {
-        print '<a href="">'.$textlink.'</a>';
-    }
-}
-function updatePage($link,$ini_update){
-    print '<a href="'.$link.'">'.$ini_update.'</a>';
 }
 function generatePassword(){
     $chars = 'abdefhiknrstyzABDEFGHKNQRSTYZ23456789';
@@ -311,7 +300,7 @@ function userrating($page){
     {
         $data_rating = mysql_fetch_array($result_rating);
         print t('Your rating').': '.$data_rating['last'];
-        include_once($root.'/bloks/form_del_vote.php');
+        include($root.'/bloks/form_del_vote.php');
         delvote($data_rating['id']);
     }
     print '</small></font></p>';
@@ -364,7 +353,7 @@ function addvote($page){
 }
 function delrating($page){
     $root = root();
-    include_once($root.'/bloks/form_del_rating.php');
+    include($root.'/bloks/form_del_rating.php');
     if(isset($_POST['delr']))
     {
         sitebdConect();
@@ -385,6 +374,7 @@ function delrating($page){
     }
 }
 function listuser(){
+    $root = root();
     sitebdConect();
     $result = mysql_query("SELECT *  FROM user
 				ORDER BY login") or die(mysql_error());
@@ -407,8 +397,10 @@ function listuser(){
                 {
                     if ($_SESSION['status']=='admin')
                     {
-                        print '<p><a href="edit_user.php?id='.$data['id'].'">'.t('Edit').'</a>&nbsp;';
-                        print '<a href="lib/del_user.php?id='.$data['id'].'">'.t('Delete').'</a>';
+                        include($root.'/bloks/form_edit_user.php');
+                        edituser();
+                        include($root.'/bloks/form_del_user.php');
+                        deluser();
                         print '</p>';
                     }
                 }
@@ -441,8 +433,10 @@ function addcom(){
                                          '$post_com[2]', '$_SESSION[user_id]', '$_SESSION[user_lang]', NOW())") or die(mysql_error());
                 if ($result2)
                 {
-                    header('Location: '.$_SERVER['HTTP_REFERER'].'?id='.$post_com['2']);
-                    die();
+                    showalert(t('Your comment was added'));
+                    docloc($_SERVER['HTTP_REFERER'].'?id='.$post_com['2']);
+                    return;
+
                 }
                 else
                     print t('Error, try again later');
@@ -465,11 +459,31 @@ function userprofile(){
     if ($result)
     {
         $data = mysql_fetch_array($result);
-        include_once($root.'/bloks/userprofile.php');
+        print '<h2>'.t('Login').' '.$data['login'].'</h2>';
+        print '<img src="';
+        if (file_exists('/var/www'.$data['avatar']))
+            print $data['avatar'];
+        print '" width="150" height="150" align="left"><br>';
+        print t('Name').' '.$data['name'].'<br>';
+        print t('Surname').' '.$data['surname'].'<br>';
+        print t('Date created').' '.$data['date_cr'].'<br>';
+        if (isset($_SESSION['user_id']))
+        {
+            print t('Date last seen').' '.$_SESSION['date_log'].'<br>';
+            print t('e-mail').' '.$data['e_mail'].'<br>';
+            if ($_SESSION['status']=='admin' || $_SESSION['user_id']==$_GET['id'])
+            {
+                include($root.'/bloks/form_edit_user.php');
+                edituser();
+                include($root.'/bloks/form_del_user.php');
+                deluser();
+                print '</p>';
+            }
+        }
     }
     else
     {
-        print (t('Error').' <a href="/site/index.php">'.t('Start Page').'</a>');
+        print t('Error');
     }
 }
 function adduser(){
@@ -500,7 +514,8 @@ function adduser(){
                 $_SESSION['user_id'] = $data['id'];
                 $_SESSION['date_log'] = $data['date_log'];
                 $_SESSION['status'] = $data['status'];
-                header ('Location: /site/index.php?masege='.t('Registration complete'));
+                header ('Location: /site/index.php');
+                ob_end_flush();
                 die();
             }
             else
@@ -540,7 +555,8 @@ function newpass(){
                     sendmail($post_pass[1],$pass);
                     $pass1 = password($pass);
                     updateBdpass($pass1,$id);
-                    header ('Location: /site/index.php?masege='.t('Your new password has been sent to the').' '.$post_pass[1]);
+                    showalert(t('Your new password has been sent to the').' '.$post_pass[1]);
+                    docloc("index.php");
                     die();
                 }
                 else
@@ -592,9 +608,10 @@ function addpage(){
                                                       $_SESSION[user_id])") or die(mysql_error());
                 if ($result)
                 {
-                    header('Location: /site/index.php?masege='.t('Update'));
+                    showalert(t('Update'));
+                    docloc("index.php");
                     die();
-                }
+                    }
                 else
                     print t('Error, try again later');
             }
@@ -632,7 +649,9 @@ function webtransl(){
                                            WHERE id = '$id'") or die(mysql_error());
                     if ($result)
                     {
-                        header ('Location: /site/websitetranslation.php?m=1');
+                        showalert(t('Update'));
+                        docloc("websitetranslation.php");
+                        die();
                     }
                     else
                     {
@@ -727,6 +746,7 @@ function readmore(){
     }
 }
 function comments(){
+    $root = root();
     sitebdConect();
     $num = 10;
     if (isset($_GET['page']))
@@ -784,7 +804,8 @@ function comments(){
                         {
                             if ($_SESSION['status'] == 'admin')
                             {
-                                print '<p>[<a href="/site/lib/del_com.php?id='.$data['id'].'">'.t('Delete').'</a>]</p>';
+                                include($root.'/bloks/form_del_com.php');
+                                delcom();
                             }
                         }
                         print '<hr>';
@@ -804,18 +825,20 @@ function comments(){
     }
 }
 function editpage(){
+    $root = root();
     if (isset($_SESSION['user_id']))
     {
         if ($_SESSION['status']=='admin' or $_SESSION['status']=='editor')
         {
             sitebdConect();
-            updatepage();
             $result = mysql_query("SELECT * FROM page WHERE id='$_REQUEST[id]'") or die(mysql_error());
             $data = mysql_fetch_array($result);
             if ($_SESSION['user_id'] == $data['autor'] or $_SESSION['status']=='admin')
             {
                 $title_page = 'title_'.$_SESSION['user_lang'];
                 $text_page = 'text_'.$_SESSION['user_lang'];
+                redactpage();
+                include_once($root.'/bloks/form_edit_page.php');
             }
             else
             {
@@ -824,16 +847,12 @@ function editpage(){
         }
         else
         {
-            $nologin = t('You are not authorized to access this page');
-            $start_page = t('Start Page');
-            die($nologin.' <a href="/site/index.php">'.$start_page.'</a>');
+            die(t('You are not authorized to access this page').' <a href="/site/index.php">'.t('Start Page').'</a>');
         }
     }
 
 }
-function updatepage(){
-    $root = root();
-    include_once($root.'/bloks/form_edit_page.php');
+function redactpage(){
     if(isset($_POST['pub']))
     {
         if( isset($_POST['title_page'], $_POST['text_page'], $_POST['id'] ))
@@ -854,8 +873,8 @@ function updatepage(){
                                         WHERE id='$id'") or die(mysql_error());
                 if ($result)
                 {
-                    $update = t('Update');
-                    header ('Location: /site/index.php?masege='.$update);
+                    showalert(t('Update'));
+                    docloc("index.php");
                     die();
                 }
                 else
@@ -869,5 +888,305 @@ function updatepage(){
             print t('You did not fill the field');
         }
     }
+}
+function mainlist(){
+    $root = root();
+    sitebdConect();
+    $result = mysql_query("SELECT *  FROM page
+                            ORDER BY id DESC") or die(mysql_error());
+    if ($result)
+    {
+        while ($data = mysql_fetch_array($result))
+        {
+
+            $title_page = titleTextLanguage($_SESSION['user_lang']);
+            $text_page = textLanguage($_SESSION['user_lang']);
+            print '<h1>'.$data[$title_page].'</h1>';
+            rating ($data['id']);
+            $data2 = selectUserId($data['autor']);
+            if ($data2)	print '<p>'.t('Author').': <a href="/site/profile.php?id='.$data2['id'].'">'.$data2['login'].'</a></p>';
+            if (strlen($data[$text_page])>150)
+            {
+                echo substr($data[$text_page],0,150)."...<br>";
+            }
+            else
+            {
+                echo $data[$text_page];
+            }
+            if (isset($_SESSION['status'],$_SESSION['user_id']))
+            {
+                if ($_SESSION['status'] == 'admin' || $_SESSION['user_id'] == $data['autor'])
+                {
+                    include($root.'/bloks/form_del_page.php');
+                    delpage();
+                    print '[<a href="/site/edit_page.php?id='.$data['id'].'">'.t('Edit').'</a>]';
+                }
+            }
+            echo '[<a href="/site/readmore.php?id='.$data['id'].'">'.t('Read More').'</a>]<br>';
+        }
+    }
+}
+function delpage(){
+    if (isset($_POST['delp']))
+    {
+        sitebdConect();
+        $id = $_POST['idpage'];
+        $result = mysql_query("SELECT id
+                       FROM page
+                       WHERE id='$id'") or die (mysql_error());
+        if ($result)
+        {
+            $data = mysql_fetch_array($result);
+            if(empty($data['id']))
+            {
+                die(t('Error'));
+            }
+            else
+            {
+                $data = mysql_query("DELETE
+                                    FROM page
+                                    WHERE id='$id'") or die(mysql_error());
+                if ($data)
+                {
+                    showalert(t('Post deleted'));
+                    docloc("index.php");
+                    die();
+                }
+                else
+                {
+                    showalert('Error');
+                    docloc("index.php");
+                    die();
+                }
+            }
+        }
+    }
+}
+function lt($send,$l){
+    if (isset($_POST[$send]))
+    {
+        if (isset($_SESSION['user_id']))
+        {
+            updateBdLang($l,$_SESSION['user_id']);
+        }
+        $_SESSION['user_lang'] = $l;
+    }
+}
+function lang(){
+    if (!isset($_SESSION['user_lang']))
+    {
+        $_SESSION['user_lang'] = 'en';
+    }
+
+    lt('sendua','ua');
+    lt('sendru','ru');
+    lt('senden','en');
+
+}
+function deluser(){
+    if (isset($_POST['delu']))
+    {
+        sitebdConect();
+        $id = $_POST['userid'];
+        $result = mysql_query("SELECT id
+                           FROM user
+                           WHERE id='$id'") or die (mysql_error());
+        if ($result)
+        {
+            $data = mysql_fetch_array($result);
+            if(empty($data['id']))
+            {
+                print t('Error');
+            }
+            else
+            {
+                $data = mysql_query("DELETE
+                                    FROM user
+                                    WHERE id='$id'") or die(mysql_error());
+                if ($data)
+                {
+                    if ($_SERVER['HTTP_REFERER']=='http://localhost/site/users.php')
+                    {
+                        showalert(t('Removed'));
+                        docloc("/site/users.php");
+                        return;
+                    }
+                    else
+                    {
+                        unset($_SESSION['user_id'],$_SESSION['status']);
+                        showalert(t('Removed'));
+                        docloc("/site/index.php");
+                        return;
+                    }
+                }
+                else
+                {
+                    print t('Error');
+                    return;
+                }
+            }
+        }
+    }
+}
+function edituser(){
+    if(isset($_POST['editu']))
+    {
+        $id = $_POST['userid'];
+        header ('Location: /site/edit_user.php?id='.$id);
+    }
+}
+function editu(){
+    $root = root();
+    if (isset($_SESSION['user_id']))
+    {
+        sitebdConect();
+        $id = $_REQUEST['id'];
+        if ($_SESSION['status']=='admin' || $_SESSION['user_id'] == $id)
+        {
+            $result=mysql_query("SELECT *
+                                FROM user
+                                WHERE id='$id'") or die(mysql_error());
+            if ($result)
+            {
+                $data = mysql_fetch_array($result);
+                include_once ($root.'/bloks/form_editu.php');
+                updateuser();
+            }
+            else
+            {
+                print t('Error');
+                return;
+            }
+        }
+        else
+        {
+            print t('You are not authorized to access this page');
+            return;
+        }
+    }
+}
+function updateuser(){
+    $root = root();
+    if(isset($_POST['update']))
+    {
+        if( isset($_POST['pass'], $_POST['r_pass'], $_POST['email'], $_POST['id']))
+        {
+            $id = $_POST['id'];
+            sitebdConect();
+            $correct = pass_r_pass();
+            if ($correct)
+            {
+                if (empty($_POST['r_pass']) && empty($_POST['pass']))
+                {
+                    $pass = Dataintroduced($_POST['pass'],'pass',$id);
+                    $r_pass =$pass;
+                }
+                else
+                {
+                    $pass = Dataintroduced($_POST['pass'],'pass',$id);
+                    $r_pass = Dataintroduced($_POST['r_pass'],'r_pass',$id);
+                    $pass = password($pass);
+                    $r_pass = password($r_pass);
+                }
+                $email = Dataintroduced($_POST['email'],'e_mail',$id);
+                $name = Dataintroduced($_POST['name'],'name',$id);
+                $surname = Dataintroduced($_POST['surname'],'surname',$id);
+                $correct = edituserCorrect($email,$pass,$r_pass,$id);
+                if ($correct)
+                {
+                    if (!empty($_FILES["file"]["name"]))
+                    {
+                        $file_type = array('image/gif','image/jpeg','image/pjpeg');
+                        if ((in_array($_FILES["file"]["type"],$file_type))
+                            && ($_FILES["file"]["size"] < 20000))
+                        {
+                            if ($_FILES["file"]["error"] > 0)
+                            {
+                                echo "Return Code: " . $_FILES["file"]["error"] . "<br />";
+                            }
+                            else
+                            {
+                                $upload = $root.'/upload/'.$id.$_FILES["file"]["name"];
+                                unlink($upload);
+                                $root_img = '/site/upload/'.$id.$_FILES["file"]["name"];
+                                move_uploaded_file($_FILES["file"]["tmp_name"],$upload);
+                            }
+                        }
+                        else
+                        {
+                            echo "Invalid file";
+                        }
+
+                    }
+                    else	$root_img = Dataimg($id);
+                    $status = Dataintroduced($_POST['status'],'status',$id);
+                    $result = mysql_query ("UPDATE user
+                                                SET pass='$pass', e_mail='$email',
+                                                name='$name', surname='$surname',
+                                                status='$status', avatar='$root_img'
+                                                WHERE id='$id'") or die(mysql_error());
+                    if ($result)
+                    {
+                        showalert(t('Update'));
+                        docloc('/site/profile.php?id='.$id);
+                        die();
+                        }
+                    else
+                        print t('Error, try again later');
+                }
+                else
+                {
+                    print t('You did not fill the field');
+                }
+            }
+            else
+                print t('Passwords mismatch');
+        }
+        else
+            print t('You did not fill the field');
+    }
+}
+function delcom(){
+    if (isset($_POST['del']))
+    {
+        sitebdConect();
+        $id = $_POST['id'];
+        $result = mysql_query("SELECT id
+                               FROM comment
+                               WHERE id='$id'") or die (mysql_error());
+        if ($result)
+        {
+            $data = mysql_fetch_array($result);
+            if(empty($data['id']))
+            {
+                print t('Error');
+                return;
+            }
+            else
+            {
+                $data = mysql_query("DELETE
+                                    FROM comment
+                                    WHERE id='$id'") or die(mysql_error());
+                if ($data)
+                {
+                    showalert(t('Removed'));
+                    docloc($_SERVER['HTTP_REFERER']);
+                    return;
+                }
+                else
+                {
+                    print t('Error');
+                }
+            }
+        }
+    }
+}
+function showalert($text){
+    ?><script type="text/javascript"> alert("<?php print $text ?>")</script><?php
+}
+function docloc($link){
+    ?><script type="text/javascript">
+    document.location.href = "<?php print $link;?>";
+    </script><?php
 }
 ?>
