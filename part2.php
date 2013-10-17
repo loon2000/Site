@@ -1,5 +1,5 @@
 
-<link rel="stylesheet" href="stl/style.css" type="text/css" />
+<link rel="stylesheet" href="stl/style.css" type="text/css">
 </head>
 
 <body >

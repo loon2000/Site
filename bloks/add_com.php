@@ -15,8 +15,7 @@ if (isset($_SESSION['user_id']))
 </form>
 <?php
 }
-else
-{
+else {
  print t('Login or register to post comments');
 }
 ?>
